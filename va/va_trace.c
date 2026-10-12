@@ -68,6 +68,8 @@
 #include <lwp.h>
 #elif defined(__sun)
 #include <thread.h>
+#elif defined(__HAIKU__)
+#include <OS.h>
 #endif
 
 /* bionic, glibc >= 2.30, musl >= 1.3 have gettid(), so add va_ prefix */
@@ -85,6 +87,8 @@ static pid_t va_gettid()
     return getthrid();
 #elif defined(__sun)
     return thr_self();
+#elif defined(__HAIKU__)
+    return find_thread(NULL);
 #else
 #warning "Cannot get kernel thread identifier on this platform."
     return (intptr_t)pthread_self();
